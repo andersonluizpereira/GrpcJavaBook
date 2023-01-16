@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_package = "br.com.grpcbooks";
+option java_multiple_files = true;
+
+package br.com.grpcbooks;
+
+service BookService {
+  rpc Create(BookRequest) returns (BookResponse);
+  rpc FindById(RequestById) returns (BookResponse);
+  rpc Delete(RequestById) returns (EmptyResponse);
+  rpc FindAll(EmptyRequest) returns (BookResponseList);
+}
+
+message BookResponseList {
+  repeated BookResponse books = 1;
+}
+
+message EmptyRequest {}
+message EmptyResponse {}
+
+message RequestById {
+  int64 id = 1;
+}
+
+message BookRequest {
+  string title = 1;
+  string author = 2;
+  string isbn = 3;
+  string description = 4;
+  double price = 5;
+  int32 quantity_in_stock = 6;
+}
+
+message BookResponse {
+  int64 id = 1;
+  string title = 2;
+  string author = 3;
+  string isbn = 4;
+  string description = 5;
+  double price = 6;
+  int32 quantity_in_stock = 7;
+}
