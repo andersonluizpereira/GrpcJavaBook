@@ -36,7 +36,7 @@ public class BookResourceTest {
     public void createBookSuccessTest() {
         BookRequest bookRequest = BookRequest.newBuilder()
                 .setTitle("Java 8 in Action")
-                .setAuthor("Raoul-Gabriel Urma, Mario Fusco, Alan Mycroft")
+                .setAuthor("Alan Mycroft")
                 .setIsbn("9781617291999")
                 .setDescription("description")
                 .setPrice(10)
