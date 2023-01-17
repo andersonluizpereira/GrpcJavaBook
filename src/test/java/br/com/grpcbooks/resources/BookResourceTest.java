@@ -32,28 +32,28 @@ public class BookResourceTest {
     }
 
     @Test
-    @DisplayName("when valid data is provided a product is created")
+    @DisplayName("when valid data is provided a book is created")
     public void createBookSuccessTest() {
-        BookRequest productRequest = BookRequest.newBuilder()
-                .setTitle("Clean Code")
-                .setAuthor("Robert C. Martin")
-                .setIsbn("978-0132350884")
+        BookRequest bookRequest = BookRequest.newBuilder()
+                .setTitle("Java 8 in Action")
+                .setAuthor("Raoul-Gabriel Urma, Mario Fusco, Alan Mycroft")
+                .setIsbn("9781617291999")
                 .setDescription("description")
-                .setPrice(10.99)
+                .setPrice(10)
                 .setQuantityInStock(100).build();
 
-        BookResponse productResponse = serviceBlockingStub.create(productRequest);
+        BookResponse bookResponse = serviceBlockingStub.create(bookRequest);
 
-        assertThat(productRequest)
+        assertThat(bookRequest)
                 .usingRecursiveComparison()
                 .comparingOnlyFields("title", "author", "isbn", "description", "price", "quantity_in_stock")
-                .isEqualTo(productResponse);
+                .isEqualTo(bookResponse);
     }
 
     @Test
     @DisplayName("when create is called with duplicated name, throw BookAlreadyExistsException")
     public void createBookAlreadyExistsExceptionTest() {
-        BookRequest productRequest = BookRequest.newBuilder()
+        BookRequest bookRequest = BookRequest.newBuilder()
                 .setTitle("Clean Code")
                 .setAuthor("Robert C. Martin")
                 .setIsbn("978-0132350884")
@@ -63,20 +63,20 @@ public class BookResourceTest {
                 .build();
 
         assertThatExceptionOfType(StatusRuntimeException.class)
-                .isThrownBy(() -> serviceBlockingStub.create(productRequest))
+                .isThrownBy(() -> serviceBlockingStub.create(bookRequest))
                 .withMessage("ALREADY_EXISTS: Livro Clean Code já cadastrado no sistema.");
 
     }
 
     @Test
-    @DisplayName("when findById method is call with valid id a product is returned")
+    @DisplayName("when findById method is call with valid id a book is returned")
     public void findByIdSuccessTest() {
         RequestById request = RequestById.newBuilder().setId(1L).build();
 
-        BookResponse productResponse = serviceBlockingStub.findById(request);
+        BookResponse bookResponse = serviceBlockingStub.findById(request);
 
-        assertThat(productResponse.getId()).isEqualTo(request.getId());
-        assertThat(productResponse.getTitle()).isEqualTo("Clean Code");
+        assertThat(bookResponse.getId()).isEqualTo(request.getId());
+        assertThat(bookResponse.getTitle()).isEqualTo("Clean Code");
     }
 
     @Test
@@ -109,7 +109,7 @@ public class BookResourceTest {
     }
 
     @Test
-    @DisplayName("when findAll method is call a product list is returned")
+    @DisplayName("when findAll method is call a book list is returned")
     public void findAllSuccessTest() {
         EmptyRequest request = EmptyRequest.newBuilder().build();
 
@@ -118,10 +118,10 @@ public class BookResourceTest {
         assertThat(responseList).isInstanceOf(BookResponseList.class);
         assertThat(responseList.getBooksCount()).isEqualTo(2);
         assertThat(responseList.getBooksList())
-                .extracting("id", "name", "price", "quantityInStock")
+                .extracting("id", "title", "author", "isbn", "description", "price", "quantityInStock")
                 .contains(
-                        tuple(1L, "Book A", 10.99, 10),
-                        tuple(2L, "Book B", 10.99, 10)
+                        tuple(1L, "Clean Code","Robert C. Martin","978-0132350884","description",10.99,100),
+                        tuple(2L, "Domain-Driven Design","Erick Evans","978-0321125217","description",30.75,50)
                 );
     }
 }

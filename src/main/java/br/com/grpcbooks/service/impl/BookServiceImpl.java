@@ -51,10 +51,10 @@ public class BookServiceImpl implements IBookService {
                 .collect(Collectors.toList());
     }
 
-    private void checkDuplicity(String name) {
-        this.productRepository.findByNameIgnoreCase(name)
+    private void checkDuplicity(String title) {
+        this.productRepository.findByTitleIgnoreCase(title)
                 .ifPresent(e -> {
-                    throw new BookAlreadyExistsException(name);
+                    throw new BookAlreadyExistsException(title);
                 });
     }
 }

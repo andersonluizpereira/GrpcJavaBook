@@ -1,4 +1,4 @@
-CREATE TABLE PRODUCT (
+CREATE TABLE BOOK (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(55) NOT NULL,
     author VARCHAR(155) NOT NULL,
@@ -9,5 +9,5 @@ CREATE TABLE PRODUCT (
     CONSTRAINT id UNIQUE (id)
 );
 
-INSERT INTO product (id, title, author, isbn, description, price, quantity_in_stock) VALUES (1,'Clean Code','Robert C. Martin','978-0132350884','description',10.99,100);
-INSERT INTO product (id, title, author, isbn, description, price, quantity_in_stock) VALUES (2,'Domain-Driven Design','Erick Evans','978-0321125217','description',30.75,50);
+INSERT INTO book (id, title, author, isbn, description, price, quantity_in_stock) VALUES (1,'Clean Code','Robert C. Martin','978-0132350884','description',10.99,100);
+INSERT INTO book (id, title, author, isbn, description, price, quantity_in_stock) VALUES (2,'Domain-Driven Design','Erick Evans','978-0321125217','description',30.75,50);

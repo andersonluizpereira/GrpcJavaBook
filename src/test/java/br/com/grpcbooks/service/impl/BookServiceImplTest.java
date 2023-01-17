@@ -68,7 +68,7 @@ public class BookServiceImplTest {
                 10.0,
                 10);
 
-        when(bookRepository.findByNameIgnoreCase(any())).thenReturn(Optional.of(book));
+        when(bookRepository.findByTitleIgnoreCase(any())).thenReturn(Optional.of(book));
 
         BookInputDTO inputDTO = new BookInputDTO(
                 "Clean Code",

@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 @GrpcService
 public class BookResource extends BookServiceGrpc.BookServiceImplBase {
 
-    private final IBookService productService;
+    private final IBookService bookService;
 
-    public BookResource(IBookService productService) {
-        this.productService = productService;
+    public BookResource(IBookService bookService) {
+        this.bookService = bookService;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class BookResource extends BookServiceGrpc.BookServiceImplBase {
                 request.getPrice(),
                 request.getQuantityInStock());
 
-        BookOutputDTO outputDTO = this.productService.create(inputDTO);
+        BookOutputDTO outputDTO = this.bookService.create(inputDTO);
 
         BookResponse response = BookResponse.newBuilder()
                 .setId(outputDTO.getId())
@@ -48,7 +48,7 @@ public class BookResource extends BookServiceGrpc.BookServiceImplBase {
 
     @Override
     public void findById(RequestById request, StreamObserver<BookResponse> responseObserver) {
-        BookOutputDTO outputDTO = productService.findById(request.getId());
+        BookOutputDTO outputDTO = bookService.findById(request.getId());
         BookResponse response = BookResponse.newBuilder()
                 .setId(outputDTO.getId())
                 .setTitle(outputDTO.getTitle())
@@ -65,15 +65,15 @@ public class BookResource extends BookServiceGrpc.BookServiceImplBase {
 
     @Override
     public void delete(RequestById request, StreamObserver<EmptyResponse> responseObserver) {
-        productService.delete(request.getId());
+        bookService.delete(request.getId());
         responseObserver.onNext(EmptyResponse.newBuilder().build());
         responseObserver.onCompleted();
     }
 
     @Override
     public void findAll(EmptyRequest request, StreamObserver<BookResponseList> responseObserver) {
-        List<BookOutputDTO> outputDTOList = productService.findAll();
-        List<BookResponse> productResponseList = outputDTOList.stream()
+        List<BookOutputDTO> outputDTOList = bookService.findAll();
+        List<BookResponse> bookResponseList = outputDTOList.stream()
                 .map(outputDTO ->
                         BookResponse.newBuilder()
                                 .setId(outputDTO.getId())
@@ -87,7 +87,7 @@ public class BookResource extends BookServiceGrpc.BookServiceImplBase {
                 .collect(Collectors.toList());
 
         BookResponseList response = BookResponseList.newBuilder()
-                .addAllBooks(productResponseList)
+                .addAllBooks(bookResponseList)
                 .build();
 
         responseObserver.onNext(response);
